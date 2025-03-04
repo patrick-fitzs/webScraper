@@ -26,7 +26,7 @@ A Python script to extract product data (like names, prices, and links) from web
 
 1. **Clone the repo**:
    
-   git clone https://github.com/<your-username>/webScraper.git
+   git clone https://github.com/patrick-fitzs/webScraper.git
 
 2. **Install dependencies:**
    
