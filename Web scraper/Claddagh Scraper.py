@@ -5,22 +5,22 @@ and export to CSV for working on.
 """
 
 from selenium import webdriver               # For browser automation
-from selenium.webdriver import ChromeOptions # to configure options for selenium
-from bs4 import BeautifulSoup                # for parsing HTML content
-import pandas as pd                          # used to export to csv
+from selenium.webdriver import ChromeOptions # to configure browser settings for selenium
+from bs4 import BeautifulSoup                # for parsing HTML content, extract specific elements
+import pandas as pd                          # store and export to csv
 import time                                  # Introduce delays so dynamic content has time to load
 
-# Initialize Selenium WebDriver
+# Initialise Selenium WebDriver
 options = ChromeOptions()                    # Create ChromeOptions object to configure browser settings
 # options.add_argument("--headless")         # Run browser in headless mode (no visible browser window) # Commented out so you can see what page is being scrapped
-driver = webdriver.Chrome(options=options)   # Initialize Chrome WebDriver with specified options
+driver = webdriver.Chrome(options=options)   # Initialise Chrome WebDriver with specified options
 
 # Starting URL (base URL)
 base_url = "https://www.claddaghrings.com/yellow-gold-claddagh-rings/" # This is the first page
 product_data = []                                                      # This list stores product details
 
 # Number of pages to scrape
-last_page = 4               # This was determined manually
+last_page = 4
 
 # Iterate through pages
 for current_page in range(1, last_page + 1):   # Loop from page 1 to last
@@ -30,7 +30,7 @@ for current_page in range(1, last_page + 1):   # Loop from page 1 to last
     else:
         page_url = f"{base_url}page/{current_page}/"   # Appended 'page/x
 
-    print(f"Scraping page {current_page}: {page_url}") # Prints the page were currently scraping
+    print(f"Scraping page {current_page}: {page_url}") # Prints the page we are currently scraping
     driver.get(page_url)                               # This loads the page in the browser
 
     # Allow the page to load completely
@@ -43,7 +43,7 @@ for current_page in range(1, last_page + 1):   # Loop from page 1 to last
     product_containers = soup.select("div.product-small.col")   # Select all product containers using CSS selectors
     if not product_containers:
         print(f"No products found on page {current_page}. Stopping.")
-        break  # Exit loop, stop if no products are found and log a report
+        break  # Exit loop, stop if no products are found
 
     # Extract product details
     for container in product_containers:
@@ -65,7 +65,7 @@ for current_page in range(1, last_page + 1):   # Loop from page 1 to last
             print(f"Error extracting product data on page {current_page}: {e}") # log as this error
 
 # Quit Selenium
-driver.quit()  # Close the browser and release resources
+driver.quit()  # Close the browser
 
 # Save results to a CSV file
 if product_data:  # if product contains data
@@ -74,6 +74,3 @@ if product_data:  # if product contains data
     print("\nDone! Data saved to Claddaghrings-com.csv.")
 else:
     print("No product data scraped.")
-
-
-# Happy scraping
